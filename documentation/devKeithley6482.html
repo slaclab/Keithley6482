@@ -1,0 +1,644 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type"
+ content="text/html; charset=ISO-8859-1">
+  <title>Keithley6482 Instrument Support</title>
+  <meta name="generator"
+ content="amaya 8.5, see http://www.w3.org/Amaya/">
+</head>
+<body>
+<h1>Using Keithley6482 instrument support in an application</h1>
+<p>Several files need minor modifications to use Keithley6482
+instrument support in
+an application.</p>
+<ol>
+  <li>Add the full path to the Keithley6482 support directory to the
+application <tt>configure/RELEASE</tt> file:<br>
+    <tt>Keithley6482=</tt><em>xxxx</em><tt>/modules/instrument/keithley6482/&lt;release&gt;</tt><br>
+Where <tt>&lt;release&gt;</tt> is the release number of of the
+Keithley6482 support.</li>
+  <li>Add stream and asyn support to application database definition
+file<br>
+The application database definition file must include the database
+definition files for the stream package and for any needed ASYN
+drivers. There are two ways that this can be done:
+    <ul>
+      <li>If you are building your application database definition file
+from an <em>xxx</em><tt>Include.dbd</tt> file you include the
+additional database definitions in that file:<br>
+        <tt>include "base.dbd"</tt><br>
+        <tt>include "stream.dbd"</tt><br>
+        <tt>include "drvAsynIPPort.dbd"</tt></li>
+      <li>If you are building your application database definition file
+from the application Makefile you specify the additional database
+definitions there:<br>
+        <em>xxx</em><tt>_DBD += base.dbd</tt><br>
+        <em>xxx</em><tt>_DBD += stream.dbd</tt><br>
+        <em>xxx</em><tt>_DBD += drvAsynIPPort.dbd</tt><br>
+      </li>
+    </ul>
+  </li>
+  <li>Add the stream and asyn support libraries to the application<br>
+You must link the stream support library and the ASYN support library
+with the application. Add the following lines: <br>
+    <em>xxx</em><tt>_LIBS += stream</tt><br>
+    <em>xxx</em><tt>_LIBS += asyn</tt><br>
+before the <br>
+    <em>xxx</em><tt>_LIBS += $(EPICS_BASE_IOC_LIBS)</tt><br>
+in the application Makefile.</li>
+  <li>Ensure that the <span style="font-family: monospace;">devKeithley6482.proto</span>
+StreamDevice protocol file is in a directory in the <span
+ style="font-family: monospace;">STREAM_PROTOCOL_PATH</span> list.<br>
+  </li>
+  <li>Load the Keithley6482 support database records in the application
+startup script:<br>
+    <tt>cd $(Keithley6482)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt>(<tt>cd
+Keithley6482</tt> if using the vxWorks shell)<br>
+    <tt>dbLoadRecords("db/devKeithley6482.db,"P=</tt><em>&lt;P&gt;</em><tt>,R=</tt><em>&lt;R&gt;</em><tt>,PORT=</tt><em>&lt;PORT&gt;</em><tt>,A=</tt><em>&lt;A&gt;</em><tt>,NELM=&lt;<big
+ style="font-style: italic;">N</big>&gt;")</tt><br>
+You'll have to provide appropriate values for the PV name prefixes (<em>&lt;P&gt;</em>
+and <em>&lt;R&gt;</em>), the port name (<em>&lt;PORT&gt;</em>) and the
+device address (<em>&lt;A&gt;</em>). The port name must match the value
+specified in an ASYN <tt>drv</tt><em>xxxxx</em><tt>Configure</tt>
+command.&nbsp; The NELM parameter sets the size of the triggered
+acquisition waveform and defaults to 1000 if not present.<br>
+    <br>
+Here are the salient commands from the example Keithley 6482
+application:<br>
+    <span style="font-family: monospace;">drvAsynIPPortConfigure("L0","moxa01:4002
+COM",0,0,0)</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetTraceIOMask("L0",-1,0x2)</span><br
+ style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetOption("L0", -1,
+"baud", "57600")</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetOption("L0", -1,
+"bits", "7")</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetOption("L0", -1,
+"parity", "even")</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetOption("L0", -1,
+"stop", "1")</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">asynSetOption("L0", -1,
+"crtscts", "N")</span><br style="font-family: monospace;">
+    <span style="font-family: monospace;">dbLoadRecords
+"db/devKeithley6482.db" "P=$(P),R=1:,PORT=L0,A=-1,NELM=1000"</span></li>
+</ol>
+When the 6482 performs a <span style="font-family: monospace;">MEASure?</span>
+command it silently resets several parameters used by triggered
+acquisition.&nbsp;&nbsp; When switching from &#8216;measure&#8217; to &#8216;triggered&#8217;
+acquisition you should process the <span
+ style="font-family: monospace;">$(P)$(R)RestoreTriggerSettings</span>
+record to return the parameters to their desired values.<br>
+<br>
+This module has been tested only with a serial connection to the
+instrument.&nbsp;&nbsp; The GPIB interface has not been tested.<br>
+<h1>Database</h1>
+The example database and EDM engineering screen provided as part of
+this support module prefix
+all record names with the macros &#8220;$(P)$(R)&#8221;.&nbsp; Typically the $(P)
+macro would expand to a &#8220;per-IOC&#8221; string and the $(R) macro would
+expand to a string unique to each of the Keithley 6482 instruments
+connected to
+the IOC. <br>
+<br>
+Several of the records have the characters 'RBV' at the
+end.&nbsp;&nbsp; This indicates that they are the 'Read Back Value'
+corresponding to an output record with the same name minus the RBV.<br>
+<br>
+<h2>IEEE-488.2 Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)IDN</td>
+      <td style="text-align: center;">waveform<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">Instrument
+identification string (FTVL=CHAR).&nbsp; A waveform record must be used
+since the identification string is too long to fit into a stringin
+record.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)RST<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Reset all
+settings to default values.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)CLS<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Clear error
+message queue and all event register bits.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)GetSTB<br>
+      </td>
+      <td style="text-align: center;">longin<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Read system
+status byte register.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)GetESR<br>
+      </td>
+      <td style="text-align: center;">longin<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Read and
+clear the system event status register.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)GetESE<br>
+$(P)$($)SetESE<br>
+      </td>
+      <td style="text-align: center;">longin<br>
+longout<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Read/Write
+the system event status enable register.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)GetSRE<br>
+$(P)$($)SetSRE</td>
+      <td style="text-align: center; vertical-align: middle;">longin<br>
+longout</td>
+      <td style="vertical-align: middle;">Read/Write the system service
+request enable register.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)TRG<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Send a bus
+trigger to the instrument.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)GetOPC<br>
+      </td>
+      <td style="text-align: center;">bi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Read the
+operation complete status.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+The TRG and GetOPC record are not that useful since the 6482 does not
+process commands when in triggered acquisition mode.&nbsp; For example,
+the operation complete status simply waits till the 6587 has acquired
+the full set of triggered samples and then reads back as 1.&nbsp; Any
+other command (e.g. FETCH?) would have the same effect of waiting until
+the end of triggered acquisition and then returning.<br>
+<br>
+<h2>Range Selection Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)Range<br>
+$(P)$(R)RangeRBV<br>
+      </td>
+      <td style="text-align: center;">mbbo<br>
+mbbi<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">Set/get the
+full-scale range of the instrument (2 nA to 20 mA).<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)AutoRange<br>
+$(P)$(R)AutoRangeRBV<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">bo<br>
+bi<br>
+      </td>
+      <td style="vertical-align: middle;">Set/get the status of the
+instrument auto-range operation.&nbsp; A search of every available
+range is performed every time an autorange occurs.&nbsp; This can
+significantly slow down data acquisition.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Measurement Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)Measure</td>
+      <td style="text-align: center;">ai<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">Send a
+&#8216;MEASure?&#8217; command to measure and return the value of the current.<br>
+Note that this operation changes the settings of several triggering
+parameters.&nbsp; To return to triggered operation process the
+$(P)$(R)RestoreTriggerSettings record.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)FetchWF<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">waveform<br>
+      </td>
+      <td style="vertical-align: middle;">Read back the samples
+acquired during the most recent triggered acquisition session.&nbsp;
+This
+command does not trigger a measurement.&nbsp; It simply requests the
+last
+group of readings. <br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Filtering Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)IntegrationTime<br>
+$(P)$(R)IntegrationTimeRBV<br>
+      </td>
+      <td style="text-align: center;">ao<br>
+ai<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">The time
+(in units of power-line cycles) to sample data for a single measurement.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)Damping<br>
+$(P)$(R)DampingRBV<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+bi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The status
+of the instrument damping.&nbsp; Damping helps reduce the noise
+resulting from large source or cable capacitance but slows down
+acquisition.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)FilterEnable<br>
+$(P)$(R)FilterEnableRBV<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+bi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The status
+of the instrument digital boxcar filter.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)FilterCount<br>
+$(P)$(R)FilterCountRBV<br>
+      </td>
+      <td style="text-align: center;">longout<br>
+longin<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The number
+of samples (2 to 60) in the instrument boxcar filter.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Triggered Acquisition Records</h2>
+These affect triggered acquisition only.&nbsp;&nbsp; The MEASure?
+command overrides these settings.<br>
+<br>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)ArmSource<br>
+$(P)$(R)ArmSourceRBV<br>
+      </td>
+      <td style="text-align: center;">mbbo<br>
+mbbi<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">The source
+which will arm the instrument when in triggered acquisition mode.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)ArmTimerInterval<br>
+$(P)$(R)ArmTimerIntervalRBV<br>
+      </td>
+      <td style="text-align: center;">ao<br>
+ai<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The time
+(seconds) between arm operations when arm source is &#8216;Timer&#8217;.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)ArmLine<br>
+$(P)$(R)ArmLineRBV<br>
+      </td>
+      <td style="text-align: center;">mbbo<br>
+mbbi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The trigger
+link line (1 through 6) to be used&nbsp; when arm source is &#8216;Trigger
+Link&#8217;.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)ArmCount<br>
+$(P)$(R)ArmCountRBV<br>
+      </td>
+      <td style="text-align: center;">longout<br>
+longin<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">The number
+of arm operations in a completed triggered acquisition sequence.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">&nbsp;$(P)$(R)TriggerSource<br>
+$(P)$(R)TriggerSourceRBV</td>
+      <td style="text-align: center; vertical-align: middle;">mbbo<br>
+mbbi</td>
+      <td style="vertical-align: middle;">The source which will trigger
+the instrument when in triggered acquisition mode and armed.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)TriggerLine<br>
+$(P)$(R)TriggerLineRBV<br>
+      </td>
+      <td style="text-align: center; vertical-align: middle;">mbbo<br>
+mbbi</td>
+      <td style="vertical-align: middle;">The trigger link line (1
+through 6) to be used&nbsp; when trigger source is &#8216;Trigger Link&#8217;.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)TriggerDelay<br>
+$(P)$(R)TriggerDelayRBV</td>
+      <td style="text-align: center; vertical-align: middle;">ao<br>
+ai</td>
+      <td style="vertical-align: middle;">Delay (seconds) from trigger
+to&nbsp; data acquisition.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)TriggerDelayAuto<br>
+$(P)$(R)TriggerDelayAutoRBV</td>
+      <td style="text-align: center; vertical-align: middle;">bo<br>
+bi<br>
+      </td>
+      <td style="vertical-align: middle;">Set trigger delay based on
+range or used fixed ($(P)$(R)TriggerDelay) value.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)TriggerCount<br>
+$(P)$(R)TriggerCountRBV</td>
+      <td style="text-align: center; vertical-align: middle;">longout<br>
+longin</td>
+      <td style="vertical-align: middle;">The number of trigger
+operations in a single arm cycle of a triggered acquisition sequence.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)Start</td>
+      <td style="text-align: center;">bo<br>
+      </td>
+      <td style="vertical-align: middle;">When this record is processed
+a triggered acquisition sequence will be initiated.&nbsp; No other
+commands will complete until the sequence has finished or been canceled.
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)Cancel</td>
+      <td style="text-align: center;">bo<br>
+      </td>
+      <td style="vertical-align: middle;">When this record is processed
+a triggered acquisition sequence will be canceled.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)RestoreTriggerSettings</td>
+      <td style="text-align: center;">seq<br>
+      </td>
+      <td style="vertical-align: middle;">Process all the triggering
+control records to write the settings back to the instrument.&nbsp;
+This is necessary when switching from &#8216;MEASure?&#8217; to triggered
+acquisition. </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)ReadTriggerSettings</td>
+      <td style="text-align: center;">seq<br>
+      </td>
+      <td style="vertical-align: middle;">Process all the triggering
+control readback records.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Local Controls Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)KLOCK<br>
+$(P)$(R)KLOCKRBV<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+bi<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">Lock out
+the instrument front-panel controls.&nbsp; When set all front-panel
+controls, including the LOCAL button, are disabled.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Voltage Source Records</h2>
+<table
+ style="text-align: left; width: 80%; margin-left: auto; margin-right: auto;"
+ border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <th style="text-align: center;">Record<br>
+Name<br>
+      </th>
+      <td style="text-align: center;"><span style="font-weight: bold;">Record<br>
+Type</span><br>
+      </td>
+      <th style="text-align: center;">Description<br>
+      </th>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)SourceEnable<br>
+$(P)$(R)SourceEnableRBV<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+bi<br>
+      </td>
+      <td style="text-align: left; vertical-align: middle;">Voltage
+source off/on.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)SourceInterlock<br>
+$(P)$(R)SourceInterlockRBV<br>
+      </td>
+      <td style="text-align: center;">bo<br>
+bi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Disable/enable
+external interlock when in 10V range.&nbsp; The external interlock is
+always enabled in the 50V and 500V ranges.&nbsp; The readback value is
+1 when the interlock is enabled and the external interlock chain is
+open.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)SourceRange<br>
+$(P)$(R)SourceRangeRBV<br>
+      </td>
+      <td style="text-align: center;">mbbo<br>
+mbbi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Voltage
+source range (10V, 50V, 500V).<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: middle; text-align: center;">$(P)$(R)SourceIlimit<br>
+$(P)$(R)SourceIlimitRBV<br>
+      </td>
+      <td style="text-align: center;">mbbo<br>
+mbbi<br>
+      </td>
+      <td style="vertical-align: middle; text-align: left;">Current
+limit (25 uA, 250 uA, 2.5 mA, 25 mA).&nbsp; The 25 mA limit is
+available only when the source is in the 10V range.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center; vertical-align: middle;">$(P)$(R)SourceVoltage<br>
+$(P)$(R)SourceVoltageRBV</td>
+      <td style="text-align: center; vertical-align: middle;">ao<br>
+ai</td>
+      <td style="vertical-align: middle;">Voltage source setpoint and
+setpoint readback.&nbsp; The setpoint must be resent after an interlock
+fault.&nbsp; Turning the source off/on is not sufficient.<br>
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">$(P)$(R)SourceReadSettings</td>
+      <td style="text-align: center;">seq<br>
+      </td>
+      <td style="vertical-align: middle;">Process all the voltage
+source readback records.<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<br>
+<h1>Installation and Building</h1>
+After obtaining a copy of the distribution, it must be installed and
+built
+for use at your site.
+<ol>
+  <li>Create an installation directory for the module. The path name of
+this directory should end with <tt>modules/instrument/keithley6482</tt>.</li>
+  <li>Place the distribution file into this directory.</li>
+  <li>Execute the following commands:<br>
+    <tt>cd modules/instrument/keithley6482</tt><br>
+    <tt>gunzip keithley6482&lt;release&gt;.tar.gz</tt><br>
+    <tt>tar xvf keithley6482&lt;release&gt;.tar</tt><br>
+    <tt>cd &lt;release&gt;</tt><br>
+Where <tt>&lt;release&gt;</tt> is the release number of of the
+Keithley6482 support. </li>
+  <li>Edit the <tt>configure/RELEASE</tt> file and set the paths to
+your installation of EPICS base, stream and ASYN support modules.</li>
+  <li>Execute <tt>make</tt> in the top level directory.</li>
+</ol>
+</body>
+</html>

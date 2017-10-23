@@ -1,0 +1,508 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 1414
+y 275
+w 203
+h 327
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-bold-r-14.0"
+fgColor index 0
+bgColor index 3
+textColor index 0
+ctlFgColor1 index 1
+ctlFgColor2 index 7
+ctlBgColor1 index 19
+ctlBgColor2 index 21
+topShadowColor index 2
+botShadowColor index 0
+showGrid
+snapToGrid
+endScreenProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 2
+w 200
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 19
+useDisplayBg
+value {
+  "$(P)$(R)"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 0
+y 18
+w 200
+h 14
+font "helvetica-bold-r-12.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 19
+useDisplayBg
+value {
+  "Voltage Source"
+}
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 20
+y 280
+w 63
+h 16
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Readback"
+}
+autoSize
+endObjectProperties
+
+# (Text Control)
+object activeXTextDspClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 30
+y 250
+w 150
+h 21
+controlPv "$(P)$(R)SourceVoltage"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 31
+editable
+autoHeight
+limitsFromDb
+nullColor index 7
+useHexPrefix
+newPos
+objType "controls"
+endObjectProperties
+
+# (Group)
+object activeGroupClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 30
+y 160
+w 153
+h 45
+
+beginGroup
+
+# (Rectangle)
+object activeRectangleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 26
+y 172
+w 153
+h 37
+lineColor index 14
+fillColor index 19
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 74
+y 164
+w 54
+h 16
+font "helvetica-medium-r-14.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 3
+value {
+  "Interlock"
+}
+autoSize
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 31
+y 183
+w 50
+h 22
+fgColor index 14
+onColor index 31
+offColor index 31
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceInterlock"
+pressValue "0"
+onLabel "Disable"
+offLabel "Disable"
+3d
+useEnumNumeric
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 90
+y 183
+w 50
+h 22
+fgColor index 14
+onColor index 31
+offColor index 31
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceInterlock"
+pressValue "1"
+onLabel "Enable"
+offLabel "Enable"
+3d
+useEnumNumeric
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 154
+y 185
+w 18
+h 18
+lineColor index 14
+fillColor index 19
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 155
+y 186
+w 16
+h 16
+lineColor index 20
+fill
+fillColor index 20
+visPv "$(P)$(R)SourceInterlockRBV"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+endGroup
+
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 25
+y 42
+w 50
+h 22
+fgColor index 14
+onColor index 31
+offColor index 31
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceEnable"
+pressValue "0"
+onLabel "Off"
+offLabel "Off"
+3d
+useEnumNumeric
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Message Button)
+object activeMessageButtonClass
+beginObjectProperties
+major 4
+minor 1
+release 0
+x 85
+y 42
+w 50
+h 22
+fgColor index 14
+onColor index 31
+offColor index 31
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceEnable"
+pressValue "1"
+onLabel "On"
+offLabel "On"
+3d
+useEnumNumeric
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 149
+y 44
+w 18
+h 18
+lineColor index 14
+fillColor index 19
+endObjectProperties
+
+# (Circle)
+object activeCircleClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 150
+y 45
+w 16
+h 16
+lineColor index 15
+fill
+fillColor index 15
+visPv "$(P)$(R)SourceEnableRBV"
+visMin "1"
+visMax "2"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 70
+y 110
+w 90
+h 22
+fgColor index 14
+bgColor index 31
+inconsistentColor index 21
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceRange"
+indicatorPv "$(P)$(R)SourceRangeRBV"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 30
+y 110
+w 42
+h 16
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "Range"
+}
+autoSize
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 70
+y 140
+w 90
+h 22
+fgColor index 14
+bgColor index 31
+inconsistentColor index 21
+topShadowColor index 1
+botShadowColor index 7
+controlPv "$(P)$(R)SourceIlimit"
+indicatorPv "$(P)$(R)SourceIlimitRBV"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 30
+y 140
+w 32
+h 16
+font "helvetica-medium-r-14.0"
+fontAlign "center"
+fgColor index 14
+bgColor index 3
+value {
+  "I limit"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 30
+y 220
+w 150
+h 21
+controlPv "$(P)$(R)SourceVoltageRBV"
+font "helvetica-medium-r-18.0"
+fontAlign "right"
+fgColor index 14
+bgColor index 4
+autoHeight
+limitsFromDb
+nullColor index 7
+useHexPrefix
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Menu Button)
+object activeMenuButtonClass
+beginObjectProperties
+major 4
+minor 0
+release 0
+x 90
+y 280
+w 90
+h 22
+fgColor index 14
+bgColor index 31
+inconsistentColor index 21
+topShadowColor index 2
+botShadowColor index 7
+controlPv "$(P)$(R)SourceReadSettings.SCAN"
+font "helvetica-bold-r-12.0"
+endObjectProperties
+
+# (Static Text)
+object activeXTextClass
+beginObjectProperties
+major 4
+minor 1
+release 1
+x 30
+y 80
+w 72
+h 13
+font "helvetica-medium-r-12.0"
+fgColor index 14
+bgColor index 19
+useDisplayBg
+value {
+  "Voltage Limit:"
+}
+autoSize
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 110
+y 80
+w 160
+h 13
+controlPv "$(P)$(R)SourceVoltage.DRVH"
+format "decimal"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 19
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 7
+newPos
+objType "monitors"
+endObjectProperties
+
+# (Text Monitor)
+object activeXTextDspClass:noedit
+beginObjectProperties
+major 4
+minor 7
+release 0
+x 130
+y 80
+w 160
+h 13
+controlPv "$(P)$(R)SourceVoltage.EGU"
+format "decimal"
+font "helvetica-bold-r-12.0"
+fgColor index 14
+bgColor index 19
+useDisplayBg
+autoHeight
+precision 0
+nullColor index 7
+newPos
+objType "monitors"
+endObjectProperties
+

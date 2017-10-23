@@ -1,0 +1,4 @@
+R0.0.0:
+    First release of PicoAmmeter driver.
+    This module is based on the module for PicoAmmeter 6487 developed 
+    by Berkeley Laboratory in 2001.

@@ -1,0 +1,4 @@
+#RELEASE Location of external products
+
+-include $(TOP)/configure/RELEASE.local
+

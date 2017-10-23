@@ -1,0 +1,42 @@
+#!../../bin/rhel6-x86_64/Keithley6482Test
+
+###############################################################################
+# Set up environment
+epicsEnvSet("P","$(P=K6482:)")
+epicsEnvSet("K6482_ADDRESS","$(K6482_ADDRESS=ts-b084-nw01:2110)")
+#epicsEnvSet("K6482_PROTOCOL","$(K6482_PROTOCOL=COM)")
+#epicsEnvSet("K6482_PROTOCOL","$(K6482_PROTOCOL=TCP)")
+
+< envPaths
+epicsEnvSet("STREAM_PROTOCOL_PATH","${TOP}/db")
+cd "${TOP}"
+
+###############################################################################
+# Register all support components
+dbLoadDatabase "dbd/Keithley6482Test.dbd"
+Keithley6482Test_registerRecordDeviceDriver pdbbase
+
+###############################################################################
+# Set up ASYN ports
+# drvAsynIPPortConfigure port ipInfo priority noAutoconnect noProcessEos
+#drvAsynIPPortConfigure("L0","$(K6482_ADDRESS) $(K6482_PROTOCOL)",0,0,0)
+drvAsynIPPortConfigure("L0","$(K6482_ADDRESS)",0,0,0)
+#Commented out the following lines due to use of Terminal Digi
+asynSetTraceIOMask("L0",-1,0x2)
+#asynSetTraceMask("L0",-1,0x9)
+#asynSetOption("L0", -1, "baud", "9600")
+#asynSetOption("L0", -1, "bits", "8")
+#asynSetOption("L0", -1, "parity", "even")
+#asynSetOption("L0", -1, "stop", "1")
+#asynSetOption("L0", -1, "crtscts", "N")
+
+###############################################################################
+# Load record instances
+dbLoadRecords "db/devKeithley6482.db" "P=$(P),R=1:,PORT=L0,A=-1,NELM=1000,VDRVH=30,VDRVL=-30"
+#dbLoadRecords "db/zeroCorrect.db" "P=$(P),R=1:"
+dbLoadRecords "db/asynRecord.db" "P=$(P),R=asyn,PORT=L0,ADDR=-1,OMAX=0,IMAX=0"
+
+###############################################################################
+# Start IOC
+cd "${TOP}/iocBoot/${IOC}"
+iocInit

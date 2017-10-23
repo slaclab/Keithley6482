@@ -1,0 +1,107 @@
+##########################################################################
+# Copyright (c) 2011 Lawrence Berkeley National Laboratory, Accelerator
+# Technology Group, Engineering Division
+# This code is distributed subject to a Software License Agreement found
+# in file LICENSE that is included with this distribution.
+##########################################################################
+
+
+ReplyTimeout = 1200;
+InTerminator = "\r";
+OutTerminator = "\r";
+
+getIDN {
+    out "*IDN?";
+    in "%\$1[^\r\n]";
+    ExtraInput = Ignore;
+}
+cmd {
+    out "\$1";
+}
+
+setD {
+    out "\$1 %d";
+    @init { out "\$1?"; in "%d"; }
+}
+getD {
+    out "\$1?";
+    in "%d";
+    ExtraInput = Ignore;
+}
+
+setF {
+    out "\$1 %f";
+    @init { out "\$1?"; in "%f"; }
+}
+getF {
+    out "\$1?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+setRange {
+    out "CURR:RANG 2E-%d";
+    @init { out "CURR:RANG?"; in "%*[^E]E-%d"; }
+}
+getRange {
+    out "CURR:RANG?";
+    in "%*[^E]E-%d";
+    ExtraInput = Ignore;
+}
+
+setArmSource {
+    out "ARM:SOUR %{IMM|BUS|TIM|MAN|TLIN|NST|PST|BST}";
+    @init { out "ARM:SOUR?"; in "%{IMM|BUS|TIM|MAN|TLIN|NST|PST|BST}"; }
+}
+getArmSource {
+    out "ARM:SOUR?";
+    in "%{IMM|BUS|TIM|MAN|TLIN|NST|PST|BST}";
+    ExtraInput = Ignore;
+}
+setTriggerSource {
+    out "TRIG:SOUR %{IMM|TLIN}";
+    @init { out "TRIG:SOUR?"; in "%{IMM|TLIN}"; }
+}
+getTriggerSource {
+    out "TRIG:SOUR?";
+    in "%{IMM|TLIN}";
+    ExtraInput = Ignore;
+}
+cancel {
+    out "\030ABOR\r";
+    in "%*s";
+    ExtraInput = Ignore;
+}
+
+#
+# Measure current
+#
+measureCurrent {
+    ReplyTimeout = 5000;
+    out "READ?";
+    in "%f";
+    ExtraInput = Ignore;
+    @init { out "FORM:ELEM READ;CONF:CURR:DC"; }
+}
+fetchBuffered {
+    ReplyTimeout = 10000;
+    Separator = ",";
+    out "FETC?";
+    in "%f";
+    ExtraInput = Ignore;
+}
+
+# We do not have ILIM for 8462
+# Source
+setSourceRange {
+    out "SOUR1:VOLT:RANGE %d";
+    #@init { out "SOUR1:VOLT:RANGE?"; in "%{1.000000E+01|3.000000E+01}"; }
+    @init { out "SOUR1:VOLT:RANGE?"; in "%{10.00|30.00}"; } 
+}
+getSourceRange {
+    out "SOUR1:VOLT:RANGE?";
+ #   in "%{1.000000E+01|3.000000E+01}";
+    in "%{10.00|30.00}";
+    ExtraInput = Ignore;
+}
+

@@ -1,0 +1,83 @@
+4 0 1
+beginScreenProperties
+major 4
+minor 0
+release 1
+x 580
+y 139
+w 640
+h 420
+font "helvetica-medium-r-18.0"
+ctlFont "helvetica-medium-r-12.0"
+btnFont "helvetica-bold-r-14.0"
+fgColor index 14
+bgColor index 3
+textColor index 0
+ctlFgColor1 index 1
+ctlFgColor2 index 7
+ctlBgColor1 index 19
+ctlBgColor2 index 21
+topShadowColor index 2
+botShadowColor index 0
+endScreenProperties
+
+# (X-Y Graph)
+object xyGraphClass
+beginObjectProperties
+major 4
+minor 7
+release 0
+# Geometry
+x 1
+y 1
+w 630
+h 395
+# Appearance
+border
+plotAreaBorder
+autoScaleBothDirections
+graphTitle "$(P)$(R)Current"
+xLabel "Time (s)"
+yLabel "Current (A)"
+fgColor index 14
+bgColor index 2
+gridColor index 14
+font "helvetica-medium-r-12.0"
+# Operating Modes
+plotMode "plotLastNPts"
+nPts 1000
+# X axis properties
+showXAxis
+xAxisStyle "time"
+xAxisSrc "AutoScale"
+xMin -20
+xMax 0
+xAxisTimeFormat "dateTime"
+xShowLabelGrid
+# Y axis properties
+showYAxis
+yAxisSrc "AutoScale"
+yMax 1
+yShowLabelGrid
+# Y2 axis properties
+y2AxisSrc "AutoScale"
+y2Max 1
+# Trace Properties
+numTraces 1
+yPv {
+  0 "$(P)$(R)Measure"
+}
+nPv {
+  0 "100"
+}
+plotUpdateMode {
+  0 "y"
+}
+ySigned {
+  0 1
+}
+plotColor {
+  0 index 21
+}
+endObjectProperties
+

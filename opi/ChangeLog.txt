@@ -1,0 +1,213 @@
+o  changeset:   41:be2eea15353c
+|  tag:         tip
+|  user:        Eric Norum <wenorum@lbl.gov>
+|  date:        Wed Mar 20 08:33:47 2013 -0700
+|  summary:     Added tag R1-1 for changeset 3da9fd9b3722
+|
+@  changeset:   40:3da9fd9b3722
+|  tag:         R1-1
+|  user:        convert-repo
+|  date:        Wed Mar 20 23:18:17 2013 +0000
+|  summary:     update tags
+|
+o  changeset:   39:1169427677db
+|  user:        enorum
+|  date:        Tue Mar 19 22:44:29 2013 +0000
+|  summary:     Add zero-check control and readback.
+|
+o  changeset:   38:244ca615bba5
+|  user:        wenorum
+|  date:        Wed Nov 09 21:10:47 2011 +0000
+|  summary:     Allow for slow readback resulting from large 'Integration Cycles' values.
+|
+o  changeset:   37:c3153f98b3e7
+|  user:        wenorum
+|  date:        Wed Nov 09 21:00:45 2011 +0000
+|  summary:     Use READ? instead of MEAS? -- See if this keeps the unit from unexpectedly enabling AutoRange.
+|
+o  changeset:   36:8b02e6e91f43
+|  user:        wenorum
+|  date:        Tue Nov 08 16:55:49 2011 +0000
+|  summary:     Clean up AutoRange controls.
+|
+o  changeset:   35:fc72687cf348
+|  user:        wenorum
+|  date:        Tue Nov 08 16:55:35 2011 +0000
+|  summary:     Use latest.
+|
+o  changeset:   34:857a72c21da3
+|  user:        wenorum
+|  date:        Tue Nov 08 04:01:10 2011 +0000
+|  summary:     Add Autorange.
+|
+o  changeset:   33:866c0db0419b
+|  tag:         R1-0
+|  user:        enorum
+|  date:        Tue Mar 08 22:20:41 2011 +0000
+|  summary:     Add more points.
+|
+o  changeset:   32:85813a9325ee
+|  user:        enorum
+|  date:        Tue Mar 08 21:43:22 2011 +0000
+|  summary:     Add note about tested version.
+|
+o  changeset:   31:5188f5431b7e
+|  user:        enorum
+|  date:        Tue Mar 08 21:41:25 2011 +0000
+|  summary:     Switch to non-LBL address.
+|
+o  changeset:   30:c0abd8b6a4f9
+|  user:        enorum
+|  date:        Tue Mar 08 21:32:43 2011 +0000
+|  summary:     Cosmetic.
+|
+o  changeset:   29:2405bb711878
+|  user:        enorum
+|  date:        Tue Mar 08 21:32:33 2011 +0000
+|  summary:     Add copyright/license notices.
+|
+o  changeset:   28:de60ae0de252
+|  user:        enorum
+|  date:        Tue Mar 08 21:31:51 2011 +0000
+|  summary:     Add copyright/license notices.
+|
+o  changeset:   27:749e66ce88be
+|  user:        enorum
+|  date:        Tue Mar 08 20:15:06 2011 +0000
+|  summary:     Update TRG notes.
+|
+o  changeset:   26:ea09628c11b3
+|  user:        enorum
+|  date:        Tue Mar 08 20:14:53 2011 +0000
+|  summary:     Don't wire down output EOS.
+|
+o  changeset:   25:014437e03620
+|  user:        enorum
+|  date:        Tue Mar 08 19:03:44 2011 +0000
+|  summary:     Allow longer P/R macros.
+|
+o  changeset:   24:5849770fed8d
+|  user:        enorum
+|  date:        Tue Mar 08 18:44:02 2011 +0000
+|  summary:     Add records.
+|
+o  changeset:   23:f1a500559325
+|  user:        enorum
+|  date:        Tue Mar 08 18:43:45 2011 +0000
+|  summary:     Rename for more consistent naming.
+|
+o  changeset:   22:04fd24bb7dd1
+|  user:        enorum
+|  date:        Tue Mar 08 18:22:17 2011 +0000
+|  summary:     Add source records.
+|
+o  changeset:   21:3e9eff946a94
+|  user:        enorum
+|  date:        Mon Mar 07 21:11:19 2011 +0000
+|  summary:     Cosmetic.
+|
+o  changeset:   20:5925897050c6
+|  user:        enorum
+|  date:        Mon Mar 07 19:47:55 2011 +0000
+|  summary:     Add record.
+|
+o  changeset:   19:6ad0dcedc501
+|  user:        enorum
+|  date:        Mon Mar 07 19:46:49 2011 +0000
+|  summary:     Add record to read back trigger settings.
+|
+o  changeset:   18:dc6832d53e02
+|  user:        enorum
+|  date:        Mon Mar 07 18:55:44 2011 +0000
+|  summary:     New display.
+|
+o  changeset:   17:3a6817608af5
+|  user:        enorum
+|  date:        Mon Mar 07 18:55:36 2011 +0000
+|  summary:     Add lots of records.
+|
+o  changeset:   16:f20f6e376bcd
+|  user:        enorum
+|  date:        Mon Mar 07 18:55:29 2011 +0000
+|  summary:     Clean up.
+|
+o  changeset:   15:ee981b99342a
+|  user:        enorum
+|  date:        Fri Mar 04 23:57:38 2011 +0000
+|  summary:     Add notes.
+|
+o  changeset:   14:8a7b7701c0fd
+|  user:        enorum
+|  date:        Fri Mar 04 23:57:31 2011 +0000
+|  summary:     Provide default NELM.
+|
+o  changeset:   13:21a8ba757704
+|  user:        enorum
+|  date:        Fri Mar 04 23:20:45 2011 +0000
+|  summary:     Minor cosmetic repositioning.
+|
+o  changeset:   12:b19fd2b08593
+|  user:        enorum
+|  date:        Fri Mar 04 23:11:41 2011 +0000
+|  summary:     Add Damping control.
+|
+o  changeset:   11:dcf7b8d98ed2
+|  user:        enorum
+|  date:        Fri Mar 04 22:07:19 2011 +0000
+|  summary:     No more need for diagnostic messages on start up.
+|
+o  changeset:   10:baf8263c2625
+|  user:        enorum
+|  date:        Fri Mar 04 21:37:30 2011 +0000
+|  summary:     Don't take too long to time out.
+|
+o  changeset:   9:4d74060f426a
+|  user:        enorum
+|  date:        Fri Mar 04 19:55:39 2011 +0000
+|  summary:     Clean up some labels.
+|
+o  changeset:   8:aeb2c2345156
+|  user:        enorum
+|  date:        Fri Mar 04 19:45:48 2011 +0000
+|  summary:     Add mechanism for backing out of 'MEASure?' mode.
+|
+o  changeset:   7:3ec850c921d9
+|  user:        enorum
+|  date:        Fri Mar 04 18:44:25 2011 +0000
+|  summary:     Add waveform readout capability.
+|
+o  changeset:   6:b619507c84bd
+|  user:        enorum
+|  date:        Fri Mar 04 17:42:02 2011 +0000
+|  summary:     Move terminators to proto file from st.cmd file.
+|
+o  changeset:   5:22f7eb90dd4f
+|  user:        enorum
+|  date:        Fri Mar 04 03:59:29 2011 +0000
+|  summary:     Lots of additions.
+|
+o  changeset:   4:0c7a98b87322
+|  user:        enorum
+|  date:        Tue Mar 01 21:45:14 2011 +0000
+|  summary:     New support scripts.
+|
+o  changeset:   3:d9a89203f7c5
+|  user:        enorum
+|  date:        Tue Mar 01 17:09:21 2011 +0000
+|  summary:     New display.
+|
+o  changeset:   2:53381011e44c
+|  user:        enorum
+|  date:        Tue Mar 01 17:09:16 2011 +0000
+|  summary:     Change diagnostics.
+|
+o  changeset:   1:c34eeffe2277
+|  user:        enorum
+|  date:        Tue Mar 01 17:09:03 2011 +0000
+|  summary:     More PVs.
+|
+o  changeset:   0:d16f51f5d403
+   user:        enorum
+   date:        Mon Feb 28 21:53:40 2011 +0000
+   summary:     New support module.
+

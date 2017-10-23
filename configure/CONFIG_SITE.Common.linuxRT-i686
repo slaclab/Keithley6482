@@ -1,0 +1,7 @@
+BR_VERSION=buildroot-2016.11.1-i686
+
+PCRE := YES
+PCRE_TOP := $(PACKAGE_SITE_TOP)/pcre/8.37/$(BR_VERSION)/
+PCRE_INCLUDE := $(PCRE_TOP)/include
+PCRE_LIB := $(PCRE_TOP)/lib
+

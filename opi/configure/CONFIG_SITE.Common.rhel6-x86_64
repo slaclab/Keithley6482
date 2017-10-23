@@ -1,0 +1,7 @@
+PKG_ARCH = rhel6-x86_64
+
+PCRE := YES
+PCRE_TOP := $(PACKAGE_SITE_TOP)/pcre/8.37/$(PKG_ARCH)
+PCRE_INCLUDE := $(PCRE_TOP)/include
+PCRE_LIB := $(PCRE_TOP)/lib
+
